@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://deabjtlp2xgtb"]
+
+[ext_resource type="Environment" uid="uid://clc46rddl07yu" path="res://unshaded_env.tres" id="1_11cud"]
+[ext_resource type="Script" uid="uid://bysa5e1urii0" path="res://motion/motion_compositor_effect.gd" id="2_11cud"]
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_11cud"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = false
+script = ExtResource("2_11cud")
+metadata/_custom_type_script = "uid://bysa5e1urii0"
+
+[sub_resource type="Compositor" id="Compositor_uf46p"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_11cud")])
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_6adnx"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uhqqe"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ia1lp"]
+albedo_color = Color(1, 0.6333333, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6adnx"]
+material = SubResource("StandardMaterial3D_ia1lp")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uhqqe"]
+
+[node name="TestGrayscaleScene" type="Node3D"]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.48097345, 0.66801435, -0.5678215, 0, 0.64765453, 0.76193404, 0.8767352, -0.36647004, 0.31150472, 0, 2.7464204, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = ExtResource("1_11cud")
+compositor = SubResource("Compositor_uf46p")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.71135163, -0.10661472, 0.6947029, 0, 0.9884278, 0.15169209, -0.7028363, -0.10790643, 0.7031197, 9.425031, 3.7410731, 9.430414)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_6adnx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_uhqqe")
+skeleton = NodePath("../..")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.715, 3.45, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("CapsuleMesh_6adnx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("CapsuleShape3D_uhqqe")
