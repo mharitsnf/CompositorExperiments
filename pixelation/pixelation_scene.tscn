@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://ceuy5d7wd110d"]
+
+[ext_resource type="Environment" uid="uid://clc46rddl07yu" path="res://unshaded_env.tres" id="1_6aie0"]
+[ext_resource type="Script" uid="uid://c24rynus4y0u3" path="res://pixelation/pixelation_compositor_effect.gd" id="2_o31gm"]
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_o31gm"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_o31gm")
+pixel_size = 4
+metadata/_custom_type_script = "uid://c24rynus4y0u3"
+
+[sub_resource type="Compositor" id="Compositor_po1ib"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_o31gm")])
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6aie0"]
+size = Vector3(10, 0.01, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_omfjy"]
+size = Vector2(10, 10)
+
+[node name="PixelationScene" type="Node"]
+
+[node name="Environments" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environments"]
+environment = ExtResource("1_6aie0")
+compositor = SubResource("Compositor_po1ib")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environments"]
+transform = Transform3D(0.70710677, 0.49999997, -0.49999997, 0, 0.7071068, 0.7071068, 0.7071068, -0.5, 0.5, 0, 0.66137177, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.72220707, -0.21094806, 0.6587244, 0, 0.95235854, 0.30498064, -0.691677, -0.22025917, 0.6878001, 3.3460023, 1.0361725, 3.3649802)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_6aie0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_omfjy")
