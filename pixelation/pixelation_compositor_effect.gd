@@ -2,7 +2,9 @@
 class_name PixelationEffect extends CompositorEffect
 
 
-@export var pixel_size: int = 5
+@export var pixel_size: int = 5:
+	set(value):
+		pixel_size = max(value, 1)
 
 var rd: RenderingDevice
 var shader: RID
